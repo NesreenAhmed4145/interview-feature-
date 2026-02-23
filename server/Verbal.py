@@ -99,8 +99,14 @@ def analyze_audio_features(video_path, language="en"):
         audio_metrics = analyze_audio_metrics(temp_audio)
         
         # 3. حساب سرعة الكلام (WPM)
+# 3. حساب سرعة الكلام (WPM)
         wpm = 0
-        wpm_feedback = "Normal"
+        wpm_feedback = "No Answer"
+        
+        # متغيرات افتراضية في حالة عدم وجود كلام
+        final_tone = "No Answer"
+        final_pause_ratio = 0
+        final_speech_pattern = "No Answer"
         
         if audio_metrics and audio_metrics["duration_sec"] > 0 and transcript_text:
             words = transcript_text.split()
@@ -108,17 +114,25 @@ def analyze_audio_features(video_path, language="en"):
             duration_min = audio_metrics["duration_sec"] / 60
             wpm = int(word_count / duration_min)
 
-            if wpm < 110: wpm_feedback = "Slow"
-            elif wpm > 160: wpm_feedback = "Fast"
-            else: wpm_feedback = "Perfect"
+            if wpm == 0: 
+                wpm_feedback = "No Speech"
+            else:
+                if wpm < 110: wpm_feedback = "Slow"
+                elif wpm > 160: wpm_feedback = "Fast"
+                else: wpm_feedback = "Perfect"
+                
+                # نأخذ تقييمات النبرة والتوقفات "فقط" لو كان هناك كلام حقيقي
+                final_tone = audio_metrics.get("voice_stability", "N/A")
+                final_pause_ratio = round(audio_metrics.get("pause_ratio", 0), 1)
+                final_speech_pattern = audio_metrics.get("speech_pattern", "N/A")
 
         return {
             "transcript": transcript_text, 
             "wpm": wpm,
             "wpm_feedback": wpm_feedback,
-            "tone": audio_metrics.get("voice_stability", "N/A") if audio_metrics else "N/A",
-            "pause_ratio": audio_metrics.get("pause_ratio", 0) if audio_metrics else 0,
-            "speech_pattern": audio_metrics.get("speech_pattern", "N/A") if audio_metrics else "N/A",
+            "tone": final_tone,
+            "pause_ratio": final_pause_ratio,
+            "speech_pattern": final_speech_pattern,
             "duration": round(audio_metrics.get("duration_sec", 0), 2) if audio_metrics else 0
         }
 
