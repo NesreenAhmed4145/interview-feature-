@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 // ==========================================
 // 🧮 دوال حساب الدرجات (Scoring Logic)
@@ -95,6 +95,12 @@ export const calculateInterviewAverages = (allResults) => {
 // 🎨 مكون الكارت الجديد (Pillar Card) المطابق للصورة
 // ==========================================
 const PillarCard = ({ icon, title, subtitle, score, colorHex, isStatus, statusText, isArabic }) => {
+    
+    // تحديد ألوان الـ Status (الملابس) بناءً على النتيجة
+    const isFormal = statusText === 'FORMAL' || statusText === 'رسمي';
+    const statusBg = isFormal ? '#e6f2ef' : '#f1f5f9'; // نعناع فاتح للرسمي، رمادي فاتح للكاجوال
+    const statusColor = isFormal ? '#2F5D54' : '#64748b'; // أخضر غامق للرسمي، رمادي داكن للكاجوال
+
     return (
         <div style={{
             display: 'flex',
@@ -103,9 +109,9 @@ const PillarCard = ({ icon, title, subtitle, score, colorHex, isStatus, statusTe
             padding: '20px 25px',
             marginBottom: '15px',
             backgroundColor: '#ffffff',
-            border: '1px solid #e5e7eb',
+            border: '1px solid #dbece8', // إطار أخضر فاتح جداً
             borderRadius: '12px',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.02)',
+            boxShadow: '0 4px 15px rgba(47, 93, 84, 0.05)', // ظل خفيف متناسق مع الموقع
             flexDirection: isArabic ? 'row-reverse' : 'row'
         }}>
             
@@ -121,7 +127,7 @@ const PillarCard = ({ icon, title, subtitle, score, colorHex, isStatus, statusTe
                     {icon}
                 </div>
                 <div style={{ textAlign: isArabic ? 'right' : 'left' }}>
-                    <div style={{ fontWeight: 'bold', fontSize: '1.15rem', color: '#0f172a' }}>{title}</div>
+                    <div style={{ fontWeight: 'bold', fontSize: '1.15rem', color: '#2F5D54' }}>{title}</div>
                     <div style={{ fontSize: '0.9rem', color: '#64748b', marginTop: '4px' }}>{subtitle}</div>
                 </div>
             </div>
@@ -133,22 +139,23 @@ const PillarCard = ({ icon, title, subtitle, score, colorHex, isStatus, statusTe
                     <div style={{
                         display: 'inline-block',
                         padding: '6px 16px',
-                        backgroundColor: statusText === 'FORMAL' || statusText === 'رسمي' ? '#dcfce7' : '#ffedd5',
-                        color: statusText === 'FORMAL' || statusText === 'رسمي' ? '#166534' : '#c2410c',
+                        backgroundColor: statusBg, 
+                        color: statusColor,
                         borderRadius: '20px',
                         fontSize: '0.8rem',
                         fontWeight: 'bold',
-                        letterSpacing: '0.5px'
+                        letterSpacing: '0.5px',
+                        border: `1px solid ${isFormal ? '#58A492' : '#cbd5e1'}` // إطار خفيف للزر
                     }}>
                         {isArabic ? `الحالة: ${statusText}` : `STATUS: ${statusText}`}
                     </div>
                 ) : (
                     // الـ Progress Bar (لباقي التقييمات)
                     <>
-                        <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#0f172a', marginBottom: '8px' }}>
+                        <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#2F5D54', marginBottom: '8px' }}>
                             {Math.round(score)}/100
                         </div>
-                        <div style={{ width: '100%', height: '8px', backgroundColor: '#f1f5f9', borderRadius: '4px', overflow: 'hidden', direction: 'ltr' }}>
+                        <div style={{ width: '100%', height: '8px', backgroundColor: '#e2e8f0', borderRadius: '4px', overflow: 'hidden', direction: 'ltr' }}>
                             <div style={{ width: `${score}%`, height: '100%', backgroundColor: colorHex, borderRadius: '4px' }}></div>
                         </div>
                     </>
@@ -163,10 +170,20 @@ const PillarCard = ({ icon, title, subtitle, score, colorHex, isStatus, statusTe
 // ==========================================
 // 🚀 المكون الرئيسي للتقييم العام
 // ==========================================
-// ==========================================
-// 🚀 المكون الرئيسي للتقييم العام
-// ==========================================
 const OverallFeedback = ({ allResults, isArabic }) => {
+    // 🎨 باليت ألوان الموقع المعتمدة
+    const primaryColor = '#58A492'; // النعناع
+    const darkGreen = '#2F5D54';    // الأخضر الغامق
+    const bgColor = '#F0F7F5';      // الأوف وايت المخضر
+
+    // جعل خلفية الصفحة بالكامل باللون الأوف وايت المخضر
+    useEffect(() => {
+        document.body.style.backgroundColor = bgColor;
+        return () => {
+            document.body.style.backgroundColor = '';
+        };
+    }, []);
+
     const scores = calculateInterviewAverages(allResults);
 
     // تحديد حالة الملابس
@@ -202,14 +219,15 @@ const OverallFeedback = ({ allResults, isArabic }) => {
     });
 
     return (
-        <div style={{ backgroundColor: '#ffffff', borderRadius: '12px', padding: '10px', textAlign: isArabic ? 'right' : 'left' }}>
+        <div style={{ borderRadius: '12px', padding: '20px 0', textAlign: isArabic ? 'right' : 'left', maxWidth: '1000px', margin: '0 auto' }}>
             
             {/* الهيدر العلوي */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '25px', flexDirection: isArabic ? 'row-reverse' : 'row' }}>
-                <h2 style={{ color: '#0f172a', margin: 0, fontSize: '1.6rem' }}>
+                <h2 style={{ color: darkGreen, margin: 0, fontSize: '1.6rem', fontWeight: '800' }}>
                     {isArabic ? "أعمدة التقييم الشامل" : "Overall Assessment Pillars"}
                 </h2>
-                <div style={{ background: '#2b5a4a', color: '#fff', padding: '8px 20px', borderRadius: '50px', fontWeight: 'bold', fontSize: '1.1rem' }}>
+                {/* 🌟 زر الدرجة الكلية */}
+                <div style={{ background: primaryColor, color: '#fff', padding: '8px 20px', borderRadius: '50px', fontWeight: 'bold', fontSize: '1.1rem', boxShadow: '0 2px 10px rgba(88, 164, 146, 0.2)' }}>
                     {isArabic ? "الدرجة الكلية: " : "Total Score: "} {scores.overall}%
                 </div>
             </div>
@@ -217,9 +235,9 @@ const OverallFeedback = ({ allResults, isArabic }) => {
             {/* ⚠️ الشريط التحذيري الخاص بالتقييم العام ⚠️ */}
             {hasShortAnswer && (
                 <div style={{
-                    backgroundColor: '#fef2f2',
-                    border: '1px solid #f87171',
-                    color: '#991b1b',
+                    backgroundColor: '#fff4f4', // لون أحمر خفيف جداً يميل للحيادية
+                    border: '1px solid #fca5a5',
+                    color: '#b91c1c',
                     padding: '15px 20px',
                     borderRadius: '8px',
                     marginBottom: '25px',
@@ -252,7 +270,7 @@ const OverallFeedback = ({ allResults, isArabic }) => {
                     title={isArabic ? "التواصل غير اللفظي" : "Non-Verbal Communication"}
                     subtitle={isArabic ? "لغة الجسد، التواصل البصري، تعابير الوجه" : "Body Language, Eye Contact, Expressions"}
                     score={scores.nonVerbal}
-                    colorHex="#3b82f6" 
+                    colorHex={primaryColor} // لون البار والأيقونة (نعناع)
                     isArabic={isArabic}
                 />
 
@@ -261,7 +279,7 @@ const OverallFeedback = ({ allResults, isArabic }) => {
                     title={isArabic ? "التواصل اللفظي" : "Verbal Communication"}
                     subtitle={isArabic ? "وضوح الصوت، سرعة التحدث، النبرة" : "Speech Clarity, Pace, Tone, Filler Words"}
                     score={scores.verbal}
-                    colorHex="#a855f7" 
+                    colorHex={primaryColor} // لون البار والأيقونة (نعناع)
                     isArabic={isArabic}
                 />
 
@@ -270,7 +288,7 @@ const OverallFeedback = ({ allResults, isArabic }) => {
                     title={isArabic ? "المعرفة والمحتوى" : "Knowledge & Content"}
                     subtitle={isArabic ? "الصلة بالموضوع، الدقة التقنية، هيكلة الإجابة" : "Relevance, Structure (STAR), Technical Accuracy"}
                     score={scores.knowledge}
-                    colorHex="#22c55e" 
+                    colorHex={primaryColor} // لون البار والأيقونة (نعناع)
                     isArabic={isArabic}
                 />
 
@@ -280,17 +298,28 @@ const OverallFeedback = ({ allResults, isArabic }) => {
                     subtitle={isArabic ? "الملابس الرسمية والسياق العام" : "Attire, Grooming, Background Context"}
                     isStatus={true}
                     statusText={formalityStatus}
-                    colorHex="#f97316" 
+                    colorHex={primaryColor} // لون الأيقونة (نعناع)
                     isArabic={isArabic}
                 />
 
             </div>
-
-            {/* صندوق الملاحظات الكلي */}
-            <h3 style={{ color: '#334155', marginTop: '35px', marginBottom: '15px', fontSize: '1.2rem' }}>
+{/* صندوق الملاحظات الكلي */}
+            <h3 style={{ color: darkGreen, marginTop: '35px', marginBottom: '15px', fontSize: '1.25rem', fontWeight: 'bold' }}>
                 {isArabic ? "نظرة عامة:" : "Overall Overview:"}
             </h3>
-            <div style={{ background: '#f8fafc', padding: '20px', borderRadius: '8px', borderLeft: isArabic ? 'none' : '4px solid #2b5a4a', borderRight: isArabic ? '4px solid #2b5a4a' : 'none', color: '#475569', fontSize: '1.05rem', lineHeight: '1.6' }}>
+            <div style={{ 
+                background: '#ffffff', 
+                padding: '20px', 
+                borderRadius: '12px', 
+                // 🌟 ترتيب الـ border مهم جداً هنا: نكتب الإطار العام الأول، وبعدين نخصص الجنب
+                border: '1px solid #dbece8', 
+                borderLeft: isArabic ? '1px solid #dbece8' : `5px solid ${primaryColor}`, 
+                borderRight: isArabic ? `5px solid ${primaryColor}` : '1px solid #dbece8', 
+                color: darkGreen, 
+                fontSize: '1.05rem', 
+                lineHeight: '1.7', 
+                boxShadow: '0 4px 15px rgba(47, 93, 84, 0.05)' 
+            }}>
                 {overviewText}
             </div>
         </div>
