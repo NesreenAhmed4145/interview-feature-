@@ -441,12 +441,11 @@ const FeedbackDashboard = ({ allResults, isArabic, handleStartNew }) => {
     const [isDownloading, setIsDownloading] = useState(false);
     const reportRef = useRef();
     
-    // ✨ [Menna & Roqia: Changed primaryColor to Mint Green, added Dark Green and Background Color]
+    // ✨ [Menna & Roqia: Colors]
     const primaryColor = '#58A492'; // Mint Green
     const darkGreen = '#2F5D54';    // Dark Green
     const bgColor = '#F0F7F5';      // Off-white Greenish
 
-    // ✨ [Menna & Roqia: Applied the global background color to the body]
     useEffect(() => {
         document.body.style.backgroundColor = bgColor;
         return () => {
@@ -466,7 +465,7 @@ const FeedbackDashboard = ({ allResults, isArabic, handleStartNew }) => {
             pdf.save(`Interview_Report.pdf`);
         } catch (error) {
             console.error("Error generating PDF:", error);
-            alert("Failed to export PDF.");
+            alert("Failed to export report.");
         } finally {
             setIsDownloading(false);
         }
@@ -529,55 +528,79 @@ const FeedbackDashboard = ({ allResults, isArabic, handleStartNew }) => {
     return (
         <div className="dashboard-container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
             
-            {/* Navigation Bar */}
-            <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', marginBottom: '30px', flexWrap: 'wrap', flexDirection: isArabic ? 'row-reverse' : 'row' }}>
-                {/* ✨ [Menna & Roqia: Removed ALL borders from navigation tabs] */}
-                <button 
-                    onClick={() => setSelectedView('overall')}
-                    style={{
-                        padding: '12px 25px', borderRadius: '8px',
-                        border: 'none', // Removed border
-                        backgroundColor: selectedView === 'overall' ? primaryColor : '#ffffff',
-                        color: selectedView === 'overall' ? '#ffffff' : darkGreen,
-                        fontWeight: 'bold', cursor: 'pointer', transition: 'all 0.2s',
-                        boxShadow: selectedView === 'overall' ? '0 4px 6px rgba(88, 164, 146, 0.3)' : '0 2px 4px rgba(0,0,0,0.05)'
-                    }}
-                    onMouseOver={(e) => {
-                        if(selectedView !== 'overall') e.currentTarget.style.backgroundColor = '#eefdf9'; // Light mint on hover
-                        else e.currentTarget.style.backgroundColor = darkGreen; // Dark green on active hover
-                    }}
-                    onMouseOut={(e) => {
-                        if(selectedView !== 'overall') e.currentTarget.style.backgroundColor = '#ffffff';
-                        else e.currentTarget.style.backgroundColor = primaryColor;
-                    }}
-                >
-                    {isArabic ? "التقييم العام" : "Overall Feedback"}
-                </button>
-
-                {allResults.map((_, index) => (
+            {/* ✨ [Menna & Roqia: Header Area containing Tabs and Export Button side by side] */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '20px', marginBottom: '30px', flexWrap: 'wrap', flexDirection: isArabic ? 'row-reverse' : 'row' }}>
+                
+                {/* Navigation Tabs */}
+                <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', flexDirection: isArabic ? 'row-reverse' : 'row' }}>
                     <button 
-                        key={index}
-                        onClick={() => setSelectedView(index)}
+                        onClick={() => setSelectedView('overall')}
                         style={{
                             padding: '12px 25px', borderRadius: '8px',
-                            border: 'none', // Removed border
-                            backgroundColor: selectedView === index ? primaryColor : '#ffffff',
-                            color: selectedView === index ? '#ffffff' : darkGreen,
+                            border: 'none',
+                            backgroundColor: selectedView === 'overall' ? primaryColor : '#ffffff',
+                            color: selectedView === 'overall' ? '#ffffff' : darkGreen,
                             fontWeight: 'bold', cursor: 'pointer', transition: 'all 0.2s',
-                            boxShadow: selectedView === index ? '0 4px 6px rgba(88, 164, 146, 0.3)' : '0 2px 4px rgba(0,0,0,0.05)'
+                            boxShadow: selectedView === 'overall' ? '0 4px 6px rgba(88, 164, 146, 0.3)' : '0 2px 4px rgba(0,0,0,0.05)'
                         }}
                         onMouseOver={(e) => {
-                            if(selectedView !== index) e.currentTarget.style.backgroundColor = '#eefdf9'; // Light mint on hover
-                            else e.currentTarget.style.backgroundColor = darkGreen; // Dark green on active hover
+                            if(selectedView !== 'overall') e.currentTarget.style.backgroundColor = '#eefdf9';
+                            else e.currentTarget.style.backgroundColor = darkGreen;
                         }}
                         onMouseOut={(e) => {
-                            if(selectedView !== index) e.currentTarget.style.backgroundColor = '#ffffff';
+                            if(selectedView !== 'overall') e.currentTarget.style.backgroundColor = '#ffffff';
                             else e.currentTarget.style.backgroundColor = primaryColor;
                         }}
                     >
-                        {isArabic ? `السؤال ${index + 1}` : `Question ${index + 1}`}
+                        {isArabic ? "التقييم العام" : "Overall Feedback"}
                     </button>
-                ))}
+
+                    {allResults.map((_, index) => (
+                        <button 
+                            key={index}
+                            onClick={() => setSelectedView(index)}
+                            style={{
+                                padding: '12px 25px', borderRadius: '8px',
+                                border: 'none',
+                                backgroundColor: selectedView === index ? primaryColor : '#ffffff',
+                                color: selectedView === index ? '#ffffff' : darkGreen,
+                                fontWeight: 'bold', cursor: 'pointer', transition: 'all 0.2s',
+                                boxShadow: selectedView === index ? '0 4px 6px rgba(88, 164, 146, 0.3)' : '0 2px 4px rgba(0,0,0,0.05)'
+                            }}
+                            onMouseOver={(e) => {
+                                if(selectedView !== index) e.currentTarget.style.backgroundColor = '#eefdf9';
+                                else e.currentTarget.style.backgroundColor = darkGreen;
+                            }}
+                            onMouseOut={(e) => {
+                                if(selectedView !== index) e.currentTarget.style.backgroundColor = '#ffffff';
+                                else e.currentTarget.style.backgroundColor = primaryColor;
+                            }}
+                        >
+                            {isArabic ? `السؤال ${index + 1}` : `Question ${index + 1}`}
+                        </button>
+                    ))}
+                </div>
+
+                {/* ✨ [Menna & Roqia: Export Report Button moved to the top right/left] */}
+                <button 
+                    onClick={handleExportPDF} 
+                    disabled={isDownloading} 
+                    style={{ 
+                        backgroundColor: '#ffffff', color: darkGreen, border: 'none', 
+                        padding: '12px 24px', borderRadius: '8px', fontWeight: 'bold', fontSize: '1rem', 
+                        cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', 
+                        transition: 'all 0.2s ease', boxShadow: '0 2px 8px rgba(47, 93, 84, 0.1)' 
+                    }}
+                    onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#eefdf9'}
+                    onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#ffffff'}
+                >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    {isDownloading ? (isArabic ? "⏳ جاري المعالجة..." : "⏳ Generating...") : (isArabic ? "📄 تصدير التقرير" : " Export Report")}
+                </button>
             </div>
 
             {/* Content Area */}
@@ -784,29 +807,13 @@ const FeedbackDashboard = ({ allResults, isArabic, handleStartNew }) => {
                 </div>
             )}
 
-            {/* Action Buttons */}
-            <div style={{display: 'flex', justifyContent: 'center', gap: '20px', marginTop: '40px'}}>
-                {/* ✨ [Menna & Roqia: Export PDF button - Changed to white background with Dark Green text & removed border] */}
-                <button 
-                    onClick={handleExportPDF} 
-                    disabled={isDownloading} 
-                    style={{ 
-                        backgroundColor: '#ffffff', color: darkGreen, border: 'none', 
-                        padding: '12px 24px', borderRadius: '8px', fontWeight: 'bold', fontSize: '1rem', 
-                        cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', 
-                        transition: 'all 0.2s ease', boxShadow: '0 2px 8px rgba(47, 93, 84, 0.1)' 
-                    }}
-                    onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#f1f5f9'}
-                    onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#ffffff'}
-                >
-                    {isDownloading ? "⏳ Generating..." : "📄 Export PDF"}
-                </button>
-                {/* ✨ [Menna & Roqia: Start New Interview button - Added hover effect] */}
+            {/* ✨ [Menna & Roqia: Start New Interview button - Only this remains at the bottom] */}
+            <div style={{display: 'flex', justifyContent: 'center', marginTop: '40px'}}>
                 <button 
                     onClick={handleStartNew} 
                     style={{ 
                         backgroundColor: primaryColor, color: '#ffffff', border: 'none', 
-                        padding: '12px 24px', borderRadius: '8px', fontWeight: 'bold', fontSize: '1rem', 
+                        padding: '12px 30px', borderRadius: '8px', fontWeight: 'bold', fontSize: '1.1rem', 
                         cursor: 'pointer', transition: 'all 0.2s ease', boxShadow: '0 4px 10px rgba(88, 164, 146, 0.3)' 
                     }}
                     onMouseOver={(e) => e.currentTarget.style.backgroundColor = darkGreen}

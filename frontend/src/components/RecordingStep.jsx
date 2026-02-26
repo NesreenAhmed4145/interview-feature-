@@ -250,8 +250,8 @@ const RecordingStep = ({ questions, currentQuestionIndex, isArabic, onNext, onFi
                                     </button>
                                 ) : (
                                     <button onClick={() => processVideoAndProceed('finish')} disabled={isProcessing} style={{ flex: '2', padding: '14px 10px', fontSize: '1rem', fontWeight: '700', backgroundColor: darkGreen, color: '#fff', border: 'none', borderRadius: '12px', cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', opacity: isProcessing ? 0.7 : 1, transition: 'opacity 0.2s', boxSizing: 'border-box' }}
-                                     onMouseOver={(e) =>{ e.currentTarget.style.backgroundColor = primaryColor; }} 
-                                     onMouseOut={(e) => {e.currentTarget.style.backgroundColor = darkGreen; }}
+                                     onMouseOver={(e) =>{ e.currentTarget.style.backgroundColor = darkGreen; }} 
+                                     onMouseOut={(e) => {e.currentTarget.style.backgroundColor = primaryColor; }}
                                      >
                                         {isProcessing ? (
                                             <>
