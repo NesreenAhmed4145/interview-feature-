@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-// ✨ [Menna & Roqia: Smart Loading Screen with Email Option]
+// ✨ [Menna & Roqia: Smart Loading Screen with Professional SVG Icons]
 const AnalyzingLoader = ({ isArabic, onSendToEmail }) => {
     // 🎨 باليت الألوان
     const primaryColor = '#58A492'; // النعناع
@@ -53,8 +53,12 @@ const AnalyzingLoader = ({ isArabic, onSendToEmail }) => {
                 
                 {isSubmitted ? (
                     // رسالة النجاح بعد إدخال الإيميل
-                    <div>
-                        <div style={{ fontSize: '3rem', marginBottom: '10px' }}>✅</div>
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                         {/* ✨ [Menna & Roqia: Clean SVG Checkmark inside a circle] */}
+                         <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke={primaryColor} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginBottom: '15px' }}>
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M8 12.5l3 3 5-6"></path>
+                         </svg>
                         <h3 style={{ color: darkGreen, margin: '0 0 10px 0' }}>
                             {isArabic ? "تم استلام بريدك بنجاح!" : "Email received!"}
                         </h3>
@@ -73,12 +77,18 @@ const AnalyzingLoader = ({ isArabic, onSendToEmail }) => {
                             style={{
                                 backgroundColor: '#ffffff', color: primaryColor, border: `2px solid ${primaryColor}`,
                                 padding: '12px 24px', borderRadius: '8px', fontWeight: 'bold', fontSize: '1rem',
-                                cursor: 'pointer', transition: 'all 0.2s ease', width: '100%'
+                                cursor: 'pointer', transition: 'all 0.2s ease', width: '100%',
+                                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px'
                             }}
                             onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#eefdf9'; }}
                             onMouseOut={(e) => { e.currentTarget.style.backgroundColor = '#ffffff'; }}
                         >
-                            {isArabic ? "أرسل لي النتيجة على الإيميل 📩" : "Email me the results 📩"}
+                            {/* ✨ [Menna & Roqia: Clean Envelope SVG] */}
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                            {isArabic ? "أرسل لي النتيجة على الإيميل" : "Email me the results"}
                         </button>
                     </div>
                 ) : (

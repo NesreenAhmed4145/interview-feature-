@@ -128,7 +128,6 @@
 
 
 
-
 import React, { useState, useEffect } from 'react';
 import SetupInterview from './components/SetupInterview';
 import RecordingStep from './components/RecordingStep';
@@ -177,8 +176,13 @@ const AnalyzingLoader = ({ isArabic, onStartWaiting, onSendToEmail, currentProgr
                     border: `1px solid #dbece8`, boxShadow: '0 4px 20px rgba(47, 93, 84, 0.08)', 
                     width: '100%', maxWidth: '500px', textAlign: 'center' 
                 }}>
-                    <h2 style={{ color: darkGreen, margin: '0 0 15px 0', fontSize: '1.6rem' }}>
-                        {isArabic ? "تم تسجيل إجاباتك بنجاح! 🎉" : "Answers recorded successfully! 🎉"}
+                     {/* ✨ [Menna & Roqia: Professional Checkmark SVG replacing the Party Emoji] */}
+                     <h2 style={{ color: darkGreen, margin: '0 0 15px 0', fontSize: '1.6rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', flexDirection: isArabic ? 'row-reverse' : 'row' }}>
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={primaryColor} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                        {isArabic ? "تم تسجيل إجاباتك بنجاح!" : "Answers recorded successfully!"}
                     </h2>
                     <p style={{ color: '#475569', marginBottom: '30px', fontSize: '1.1rem' }}>
                         {isArabic ? "كيف تفضل استلام نتيجة التحليل؟" : "How would you like to receive your analysis results?"}
@@ -196,7 +200,14 @@ const AnalyzingLoader = ({ isArabic, onStartWaiting, onSendToEmail, currentProgr
                             onMouseOver={(e) => { e.currentTarget.style.backgroundColor = darkGreen; }}
                             onMouseOut={(e) => { e.currentTarget.style.backgroundColor = primaryColor; }}
                         >
-                            {isArabic ? "⏳ الانتظار لمشاهدة التحليل الآن" : "⏳ Wait for Analysis Now"}
+                            {/* ✨ [Menna & Roqia: Clean Clock/Timer SVG replacing the Hourglass Emoji] */}
+                            <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', flexDirection: isArabic ? 'row-reverse' : 'row' }}>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 15 15"></polyline>
+                                </svg>
+                                {isArabic ? "الانتظار لمشاهدة التحليل الآن" : "Wait for Analysis Now"}
+                            </span>
                         </button>
 
                         <button 
@@ -209,7 +220,14 @@ const AnalyzingLoader = ({ isArabic, onStartWaiting, onSendToEmail, currentProgr
                             onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#f1f5f9'; }}
                             onMouseOut={(e) => { e.currentTarget.style.backgroundColor = '#ffffff'; }}
                         >
-                            {isArabic ? "📩 إرسال التقرير إلى بريدي الإلكتروني" : "📩 Send report to email"}
+                           {/* ✨ [Menna & Roqia: Clean Envelope SVG replacing the Mail Emoji] */}
+                           <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', flexDirection: isArabic ? 'row-reverse' : 'row' }}>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                    <polyline points="22,6 12,13 2,6"></polyline>
+                                </svg>
+                                {isArabic ? "إرسال التقرير إلى بريدي الإلكتروني" : "Send report to email"}
+                            </span>
                         </button>
                     </div>
                 </div>
@@ -248,6 +266,7 @@ const AnalyzingLoader = ({ isArabic, onStartWaiting, onSendToEmail, currentProgr
                 }}>
                     {isSubmitted ? (
                         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                            {/* ✨ [Menna & Roqia: Clean SVG Checkmark inside a circle] */}
                             <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke={primaryColor} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginBottom: '15px' }}>
                                 <circle cx="12" cy="12" r="10"></circle>
                                 <path d="M8 12.5l3 3 5-6"></path>
@@ -299,6 +318,8 @@ const AnalyzingLoader = ({ isArabic, onStartWaiting, onSendToEmail, currentProgr
                                     cursor: isSendingEmailReq ? 'wait' : 'pointer', transition: 'all 0.2s ease', width: '100%',
                                     opacity: isSendingEmailReq ? 0.7 : 1, marginTop: '5px'
                                 }}
+                                onMouseOver={(e) => { if(!isSendingEmailReq) e.currentTarget.style.backgroundColor = darkGreen; }}
+                                onMouseOut={(e) => { if(!isSendingEmailReq) e.currentTarget.style.backgroundColor = primaryColor; }}
                             >
                                 {isSendingEmailReq ? "⏳..." : (isArabic ? "تأكيد الإرسال" : "Confirm")}
                             </button>
