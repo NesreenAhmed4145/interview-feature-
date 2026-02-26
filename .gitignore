@@ -12,3 +12,10 @@ node_modules/
 
 # OS
 .DS_Store
+
+# Ignore Recorded Videos
+*.mp4
+*.avi
+*.mov
+*.wav
+*.mp3
