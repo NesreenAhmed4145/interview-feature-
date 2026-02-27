@@ -1,8 +1,14 @@
 import google.generativeai as genai
 import json
 
+import os # 👈 ضيفي ده
+from dotenv import load_dotenv # 👈 ضيفي ده
+
+# تحميل المتغيرات من ملف .env
+load_dotenv() # 👈 ضيفي ده
+
 # 🔑 تأكدي من مفتاحك
-GENAI_API_KEY = "AIzaSyAxIhcNx7CqYHeTzTOA3azCI3DGi3apJfg" 
+GENAI_API_KEY = os.getenv("GENAI_API_KEY")
 genai.configure(api_key=GENAI_API_KEY)
 
 model = genai.GenerativeModel('gemini-2.5-flash')

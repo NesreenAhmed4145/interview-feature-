@@ -116,7 +116,8 @@ const CameraOverlay = memo(({ status, isArabic, stopRecording, resetKey, primary
 // ==========================================
 // 🚀 4. المكون الرئيسي للخطوة
 // ==========================================
-const RecordingStep = ({ questions, currentQuestionIndex, isArabic, onNext, onFinish }) => {
+// ✨ [Menna & Roqia: Added onBack prop to handle returning to Setup]
+const RecordingStep = ({ questions, currentQuestionIndex, isArabic, onNext, onFinish, onBack }) => {
     const [isProcessing, setIsProcessing] = useState(false);
     const [retakeKey, setRetakeKey] = useState(0); 
     
@@ -166,8 +167,30 @@ const RecordingStep = ({ questions, currentQuestionIndex, isArabic, onNext, onFi
     };
 
     return (
-        <div style={{ textAlign: 'center', maxWidth: '1200px', margin: '0 auto', padding: '10px 20px', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
             
+            {/* ✨ [Menna & Roqia: Back Button Header] */}
+            <div style={{ display: 'flex', justifyContent: isArabic ? 'flex-end' : 'flex-start', marginBottom: '20px' }}>
+                <button 
+                    onClick={onBack}
+                    style={{
+                        display: 'flex', alignItems: 'center', gap: '8px',
+                        backgroundColor: 'transparent', color: '#64748b', border: 'none',
+                        fontSize: '1rem', fontWeight: '600', cursor: 'pointer',
+                        padding: '8px 12px', borderRadius: '8px', transition: 'all 0.2s ease',
+                        flexDirection: isArabic ? 'row-reverse' : 'row'
+                    }}
+                    onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#e2e8f0'; e.currentTarget.style.color = darkGreen; }}
+                    onMouseOut={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = '#64748b'; }}
+                >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ transform: isArabic ? 'rotate(180deg)' : 'none' }}>
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    {isArabic ? "الرجوع للإعدادات" : "Back to Setup"}
+                </button>
+            </div>
+
             <div style={{ display: 'flex', gap: '30px', alignItems: 'stretch', height: '600px', flexDirection: isArabic ? 'row-reverse' : 'row', marginBottom: '20px' }}>
                 
                 {/* ⬅️ القسم الجانبي */}
@@ -224,7 +247,6 @@ const RecordingStep = ({ questions, currentQuestionIndex, isArabic, onNext, onFi
                                 <div style={{ width: '14px', height: '14px', background: '#ffffff', borderRadius: '3px' }}></div>
                                 <span>{isArabic ? "إنهاء الإجابة" : "Stop Answer"}</span>
                                 
-                                {/* ✨ رجعنا العداد هنا أهو باستخدام المكون المستقل */}
                                 <ButtonTimer 
                                     isRecording={status === 'recording'} 
                                     onTimeUp={stopRecording} 
@@ -250,8 +272,8 @@ const RecordingStep = ({ questions, currentQuestionIndex, isArabic, onNext, onFi
                                     </button>
                                 ) : (
                                     <button onClick={() => processVideoAndProceed('finish')} disabled={isProcessing} style={{ flex: '2', padding: '14px 10px', fontSize: '1rem', fontWeight: '700', backgroundColor: darkGreen, color: '#fff', border: 'none', borderRadius: '12px', cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', opacity: isProcessing ? 0.7 : 1, transition: 'opacity 0.2s', boxSizing: 'border-box' }}
-                                     onMouseOver={(e) =>{ e.currentTarget.style.backgroundColor = darkGreen; }} 
-                                     onMouseOut={(e) => {e.currentTarget.style.backgroundColor = primaryColor; }}
+                                     onMouseOver={(e) =>{ e.currentTarget.style.backgroundColor = primaryColor; }} 
+                                     onMouseOut={(e) => {e.currentTarget.style.backgroundColor = darkGreen; }}
                                      >
                                         {isProcessing ? (
                                             <>

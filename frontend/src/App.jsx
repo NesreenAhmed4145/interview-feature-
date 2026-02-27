@@ -451,11 +451,13 @@ function App() {
 
       {step === 2 && (
         <RecordingStep 
+            key={currentQuestionIndex}
             questions={questions} 
             currentQuestionIndex={currentQuestionIndex} 
             isArabic={isArabic} 
             onNext={handleNextQuestion}
             onFinish={handleFinishRecording} 
+            onBack={() => setStep(1)} // ✨ ضيفي السطر ده هنا
         />
       )}
 
